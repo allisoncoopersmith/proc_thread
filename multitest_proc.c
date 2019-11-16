@@ -20,6 +20,7 @@ int makeRandoms(int upper){
 
 
 void makeAndScramble (int* numbers, int arraySize) {
+  srand(time(NULL));
   int x;
   for (x=0; x<arraySize; x++) {
     numbers[x] = x;
@@ -28,8 +29,8 @@ void makeAndScramble (int* numbers, int arraySize) {
   int stop = ((arraySize/4)*3);
 
   for (y= 0; y < stop; y++) {
-    int index1= makeRandoms(arraySize);
-    int index2 = makeRandoms(arraySize);
+    int index1= makeRandoms(arraySize-1);
+    int index2 = makeRandoms(arraySize-1);
     int temp = numbers[index1];
     numbers[index1] = numbers[index2];
     numbers[index2] = temp;
@@ -43,12 +44,12 @@ int main() {
   makeAndScramble(numbers,arraySize);
 
   int z;
-  for (z=0; z<arraySize; z++){
+  for (z=0; z<arraySize; z++) {
     printf("%d\n", numbers[z]);
   }
 
 
-    /*int procSize = 10;
+    int procSize = 2;
     int target = 5;
     int processAmount = arraySize/procSize;
     int currIndex = 0;
@@ -82,7 +83,7 @@ int main() {
       wait (&status);
     }
 
-    */
+
 
 
 
