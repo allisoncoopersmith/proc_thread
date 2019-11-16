@@ -1,8 +1,13 @@
 // C program for generating a
 // random number in a given range.
 #include <stdio.h>
-#include <stdlib.h>
 #include <time.h>
+#include <stddef.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+
 
 // Generates and prints 'count' random
 // numbers in range [lower, upper].
@@ -20,7 +25,9 @@ void makeAndScramble (int* numbers, int arraySize) {
     numbers[x] = x;
   }
   int y;
-  for (y= 0; y < (arraySize/4)*3; y++) {
+  int stop = ((arraySize/4)*3);
+
+  for (y= 0; y < stop; y++) {
     int index1= makeRandoms(arraySize);
     int index2 = makeRandoms(arraySize);
     int temp = numbers[index1];
@@ -30,28 +37,53 @@ void makeAndScramble (int* numbers, int arraySize) {
 }
 //int multitest(int arraySize, int procSize){
 int main() {
-    int arraySize = 20;
-    int numbers[arraySize];
+  //initializing array
+  int arraySize = 10;
+  int numbers[arraySize];
+  makeAndScramble(numbers,arraySize);
 
-    makeAndScramble(numbers,arraySize);
+  int z;
+  for (z=0; z<arraySize; z++){
+    printf("%d\n", numbers[z]);
+  }
 
-    int x;
-    for (x=0; x<arraySize; x++) {
-      numbers[x] = x;
-    }
-    int y;
-    for (y= 0; y < (arraySize/4)*3; y++) {
-      int index1= makeRandoms(arraySize);
-      int index2 = makeRandoms(arraySize);
-      int temp = numbers[index1];
-      numbers[index1] = numbers[index2];
-      numbers[index2] = temp;
+
+    /*int procSize = 10;
+    int target = 5;
+    int processAmount = arraySize/procSize;
+    int currIndex = 0;
+    int upperIndex = procSize-1;
+    int i;
+    for (i=0; i< processAmount; ++i) {
+      if (fork()==0) {
+        int l;
+        if (i == processAmount-1) {
+        //  printf("%d\n", i);
+          upperIndex = arraySize-1;
+        }
+        for (l = currIndex; l <= upperIndex; l++) {
+          //printf("%d\n", upperIndex);
+          if (numbers[l]==target) {
+           printf("%d\n", l);
+            return 0;
+          //  printf("poop");
+          }
+        }
+        exit(0);
+
+      }
+      currIndex = upperIndex + 1;
+      upperIndex = currIndex + procSize - 1;
+
     }
 
-    int z;
-    for (z=0; z<arraySize; z++){
-      
+    int status;
+    for (i=0; i < processAmount; ++i) {
+      wait (&status);
     }
+
+    */
+
 
 
     return 0;
