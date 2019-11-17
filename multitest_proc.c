@@ -41,11 +41,12 @@ int main() {
   int numbers[arraySize];
   makeAndScramble(numbers,arraySize);
 
-  int z;
+
+  /*int z;
   for (z=0; z<arraySize; z++) {
     printf("%d\n", numbers[z]);
   }
-  printf("\n");   printf("\n");   printf("\n");   printf("\n");
+  printf("\n");   printf("\n");   printf("\n");   printf("\n"); */
 
 
     int procSize = 10;
@@ -64,8 +65,9 @@ int main() {
           upperIndex = arraySize-1;
         }
         for (l = currIndex; l <= upperIndex; l++) {
-          printf("%d\n", l);
+        //  printf("%d\n", l);
           if (numbers[l]==target) {
+
            printf("found at %d\n", l);
           exit(l-currIndex);
           }
@@ -86,6 +88,7 @@ int main() {
     for (k=0; k< processAmount; k++) {
       int status;
       waitpid(signals[k], &status, 0);
+      printf("%d\n", WEXITSTATUS(status));
 
     }
 
