@@ -37,24 +37,27 @@ void makeAndScramble (int* numbers, int arraySize) {
 //int multitest(int arraySize, int procSize){
 int main() {
   //initializing array
-  int arraySize = 30;
+  int arraySize = 10000;
   int numbers[arraySize];
   makeAndScramble(numbers,arraySize);
 
   int z;
-/*  for (z=0; z<arraySize; z++) {
+  for (z=0; z<arraySize; z++) {
     printf("%d\n", numbers[z]);
-  } */
+  }
+  printf("\n");   printf("\n");   printf("\n");   printf("\n");
 
 
-    int procSize = 5;
+    int procSize = 250;
     int target = 5;
     int processAmount = arraySize/procSize;
     int currIndex = 0;
     int upperIndex = procSize-1;
     int i;
+    pid_t sig;
+    pid_t signals[processAmount];
     for (i=0; i< processAmount; ++i) {
-      pid_t sig = fork();
+      sig = fork();
       if (sig==0) {
         int l;
         if (i == processAmount-1) {
@@ -71,8 +74,7 @@ int main() {
 
       }
       else {
-        int status;
-        waitpid(sig, &status, 0);
+        signals[i] = sig;
       }
 
       currIndex = upperIndex + 1;
@@ -80,6 +82,17 @@ int main() {
 
 
     }
+    int k;
+    for (int k=0; k< processAmount; k++) {
+      int status;
+      waitpid(signals[k], &status, 0);
+
+    }
+    int status;
+  //  while ((sig=waitpid(-1,&status,0))!=-1) {
+    //}
+  //  waitpid(sig, &status, 0);
+
 /*
     int status;
     for (i=0; i < processAmount; ++i) {
