@@ -78,12 +78,14 @@ int main() {
 
 
     }
-    int k;
+  int k;
     for (k=0; k< processAmount; k++) {
       int status;
       waitpid(signals[k], &status, 0);
       if(WEXITSTATUS(status) != 251) {
-        //do stuff
+	int exitStatus = WEXITSTATUS(status);
+	int procSpace = (k * procSize) + exitStatus;
+        printf("Found in process: %d \n", procSpace);
       }
 
     }
