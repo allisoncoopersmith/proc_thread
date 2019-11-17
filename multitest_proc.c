@@ -42,12 +42,6 @@ int main() {
   makeAndScramble(numbers,arraySize);
 
 
-  /*int z;
-  for (z=0; z<arraySize; z++) {
-    printf("%d\n", numbers[z]);
-  }
-  printf("\n");   printf("\n");   printf("\n");   printf("\n"); */
-
 
     int procSize = 10;
     int target = 5;
@@ -72,7 +66,7 @@ int main() {
           exit(l-currIndex);
           }
         }
-        exit(-1);
+        exit(251);
 
       }
       else {
@@ -88,7 +82,9 @@ int main() {
     for (k=0; k< processAmount; k++) {
       int status;
       waitpid(signals[k], &status, 0);
-      printf("%d\n", WEXITSTATUS(status));
+      if(WEXITSTATUS(status) != 251) {
+        //do stuff
+      }
 
     }
 
