@@ -37,7 +37,7 @@ void makeAndScramble (int* numbers, int arraySize) {
 //int multitest(int arraySize, int procSize){
 int main() {
   //initializing array
-  int arraySize = 10000;
+  int arraySize = 100;
   int numbers[arraySize];
   makeAndScramble(numbers,arraySize);
 
@@ -48,7 +48,7 @@ int main() {
   printf("\n");   printf("\n");   printf("\n");   printf("\n");
 
 
-    int procSize = 250;
+    int procSize = 10;
     int target = 5;
     int processAmount = arraySize/procSize;
     int currIndex = 0;
@@ -67,10 +67,10 @@ int main() {
           printf("%d\n", l);
           if (numbers[l]==target) {
            printf("found at %d\n", l);
-          exit(1);
+          exit(l-currIndex);
           }
         }
-        exit(0);
+        exit(-1);
 
       }
       else {
@@ -83,21 +83,11 @@ int main() {
 
     }
     int k;
-    for (int k=0; k< processAmount; k++) {
+    for (k=0; k< processAmount; k++) {
       int status;
       waitpid(signals[k], &status, 0);
 
     }
-    int status;
-  //  while ((sig=waitpid(-1,&status,0))!=-1) {
-    //}
-  //  waitpid(sig, &status, 0);
-
-/*
-    int status;
-    for (i=0; i < processAmount; ++i) {
-      wait (&status);
-    } */
 
 
 
