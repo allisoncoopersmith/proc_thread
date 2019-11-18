@@ -119,9 +119,11 @@ int fin=0;
        //printf("%d\n",i);
 	printf("Upper bound : %d\t, Lower Bound: %d\t",res->upperIndex, res->currIndex);
        printf("\n");
+
+	//bounds are clearly correct
 	
        //retVal=pthread_create(&thread[i],NULL,threadFunction,&res);
-	retVal=pthread_create(&thread[i],NULL,threadFunction,&res);
+	retVal=pthread_create(&thread[i],NULL,threadFunction,res);
 //intptr_t)i); //need to fix this to reflect what is being passed in fx
        if(retVal!=0){
            printf("Get forked. pthread_create failed in %d_th pass\n",i);
@@ -162,6 +164,9 @@ void *threadFunction (void* arg)
     //printf("Thread number: %d \n", threadCount);
     resultStruct *data = (resultStruct*) arg;
     printf("Flag is : %d\n", data->result);
+    printf("Curr index: %d\n", data->currIndex);
+    printf("Upper index: %d\n", data->upperIndex);
+return;
     
     //printf("lower: %d\n",data->currIndex);
     //printf("upper: %d\n",data->upperIndex);
@@ -182,7 +187,7 @@ printf("\n");
         /*printf("Check number in range:\n");
 	for(k=0;k<10; k++){
 		printf("%d\t", ptr[k]);
-	}	
+	}	ARRAY IS BEING PRINTED CORRECTLY
 	printf("\n");
 	//int t1 = data->currIndex;
 	//int t2 = data->upperIndex;
