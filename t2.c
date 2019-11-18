@@ -56,19 +56,19 @@ int main (void)
    int numbers[arraySize];
    makeAndScramble(numbers,arraySize);
    
-   printf("PRINTING ORIGINAL ARRAY\n");
+   //printf("PRINTING ORIGINAL ARRAY\n");
    //resultStruct *res = malloc(sizeof(resultStruct)); //struct to pass args to function
 
 printf("-------------------------------------\n");
-   int d=0;
-   ptr=&(numbers[0]);
-   	for(d=0; d<arraySize; d++){
+ 	int d=0;
+	ptr=&(numbers[0]);
+	for(d=0; d<arraySize; d++){
 		printf("%d\t",ptr[d]);
 		//res.arr[d]=numbers[d];
-		//printf("%d\t",res.arr[d]); -- values have been copied
+		//printf("%d\t",res.arr[d]); //-- values have been copied
 	}
-   printf("\n");
- //this is printing the array
+ printf("\n");
+// this is printing the array
  printf("-------------------------------------\n");
 
    // let threadsize be equal to n for now
@@ -122,7 +122,7 @@ printf("-------------------------------------\n");
         //if(res->result !=-1){
 	//	fin=res->result;
 	//}
-	free(res);        
+	//free(res);        
    }
 
    for(i=0;i<n;i++){
@@ -133,6 +133,9 @@ printf("-------------------------------------\n");
             }
    }
 
+printf("Target %d was found at array index %d\n", target, fin);
+return;
+
 }
 
 
@@ -140,29 +143,29 @@ void *threadFunction (void* arg)
 {
   
     resultStruct *data = (resultStruct*) arg;
-    printf("Flag is : %d\n", data->result);
+    /*printf("Flag is : %d\n", data->result);
     printf("Curr index: %d\n", data->currIndex);
-    printf("Upper index: %d\n", data->upperIndex);
-return;
-    
-printf("\n");
+    printf("Upper index: %d\n", data->upperIndex);  
+*/  
+
     //int threadNum = (intptr_t)arg;
 
-    //now search
+        //now search
 	int k;
 	
         
-	printf("Current index: %d\n", data->currIndex);
+	//printf("Current index: %d\n", data->currIndex);
 	for(k=data->currIndex; k<=data->upperIndex; k++){
 		printf("%d\n",ptr[k]);
 		
 		if(ptr[k]==target){
-			printf("Checking if %d == %d\n", ptr[k], target);
-			printf("Found at index: %d\n",k);
+			//printf("Checking if %d == %d\n", ptr[k], target);
+			//printf("Found at index: %d\n",k);
                         fin=k;
 			break;
 		}
 	}
+    
     
 
     //pid_t tid = syscall(SYS_gettid);
