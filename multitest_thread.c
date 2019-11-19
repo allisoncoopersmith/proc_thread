@@ -6,14 +6,16 @@
 #include <unistd.h>
 
 //int threadCount=0;
-int count=0;
-
+//int count=0;
+int*ptr; //holds initial array numbers
+int fin=0; //holds final index (to be returned from main method)
+int target = 2; // make this a macro
 typedef struct resultStruct{
 	int currIndex;
 	int upperIndex; // 
-	int* arr; //original array to be passed
+	//int* arr; //original array to be passed
 	int result; //flag
-	int target; //target to be searched for
+	//int target; //target to be searched for
         
 }resultStruct;
 
@@ -44,87 +46,83 @@ void makeAndScramble (int* numbers, int arraySize) {
   }
 }
 
+
+
 int main (void)
 {
 
-   int arraySize = 20;
-   int target = 2; //user specified
+   int arraySize = 10;
+   target = 2; //user specified
    int numbers[arraySize];
    makeAndScramble(numbers,arraySize);
    
-printf("PRINTING ORIGINAL ARRAY\n");
+   //printf("PRINTING ORIGINAL ARRAY\n");
+   //resultStruct *res = malloc(sizeof(resultStruct)); //struct to pass args to function
+
 printf("-------------------------------------\n");
-   int d=0;
-   	for(d=0; d<arraySize; d++){
-		printf("%d\t",numbers[d]);
+ 	int d=0;
+	ptr=&(numbers[0]);
+	for(d=0; d<arraySize; d++){
+		printf("%d\t",ptr[d]);
+		//res.arr[d]=numbers[d];
+		//printf("%d\t",res.arr[d]); //-- values have been copied
 	}
-   printf("\n");
- //this is printing the array
+ printf("\n");
+// this is printing the array
  printf("-------------------------------------\n");
-
-
 
    // let threadsize be equal to n for now
    int n=0,i=0,retVal=0;
    pthread_t *thread;
-
-   /*printf("Enter the number for threads you want to create between 1 to 10 \n");*/
-
-   n = 7; //number of threads we want
-   //scanf("%d",&n); 
-   //user enters thread size, for now it will be from stdin
+   n = 2; //number of threads we want
+  
    
    //the number of threads to run
    int threadAmount = arraySize/n; //where n is threadSize (the amount of elements in between each thing)
-   int currIndex = 0;
-   int upperIndex = threadAmount-1;
-   resultStruct res; //struct to pass args to function
-   res.upperIndex = upperIndex;
-   res.currIndex= currIndex;
-   res.arr=numbers;
-   res.result=-1;
-   res.target=target;
+   //res->upperIndex = threadAmount-1;
+   //res->currIndex=0;
 
-   int foundIndex=-1;
-   
-   //struct works
+   //before we go into loop, we do the bound calculations
+	resultStruct bounds[n]; //make a result struct for each thread
+	int q;   
+	for(q=0; q<n; q++){
+		if(q==0){
+			bounds[q].upperIndex= threadAmount-1;
+			bounds[q].currIndex=  0;
+		}else if(q==(n-1)){
+			bounds[q].upperIndex= arraySize-1;
+			bounds[q].currIndex= bounds[q-1].upperIndex + 1;
+		}else{
+			bounds[q].upperIndex= bounds[q-1].currIndex + threadAmount -1;
+			bounds[q].currIndex= bounds[q-1].upperIndex + 1;
+		}
+		bounds[q].result=-1;
+		printf("Added: %d, %d, %d\n", bounds[q].upperIndex, bounds[q].currIndex, bounds[q].result);
+	}
 
-  // printf("Values in the struct: %d, %d, %d, %d\n", res.currIndex, res.upperIndex, res.arr[1], res.result); 
+
+  //now we have bounds arary
    
-   thread = (pthread_t *) malloc (n*sizeof(pthread_t));
-   
+   thread = (pthread_t *) malloc (n*sizeof(pthread_t)); //check piazza, might be wrong
+  
    for (i=0;i<n;i++){
-       if(i==n-1){
-		
-          res.upperIndex = arraySize-1;
-       }
-       printf("\n");
-       
-      
-       //printf("%d\n",i);
-	printf("Upper bound : %d\t, Lower Bound: %d\t",res.upperIndex, res.currIndex);
-       printf("\n");
-       retVal=pthread_create(&thread[i],NULL,threadFunction,&res);
+	q=i; 
+        resultStruct *res = malloc(sizeof(resultStruct)); //struct to pass args to function
+	res->upperIndex=bounds[q].upperIndex;
+	res->currIndex=bounds[q].currIndex;
+	res->result = -1;
+	printf("Res values: %d upper, %d current, %d flag\n", res->upperIndex, res->currIndex, res->result);
+	 
+       retVal=pthread_create(&thread[i],NULL,threadFunction,res);
 
-//intptr_t)i); //need to fix this to reflect what is being passed in fx
        if(retVal!=0){
            printf("Get forked. pthread_create failed in %d_th pass\n",i);
            exit(EXIT_FAILURE);        
        }
-        if(res.result !=-1){
-		foundIndex=res.result;
-		//means we found it
-		res.result=-1; //for next thread
-	}
-	//update struct current index after each thread is created    
-	//check result --> if result is not -1, then we found it here
-        //and we must reset flag
-	
-      
-	
-        	res.currIndex = res.upperIndex+1;
-		res.upperIndex = res.currIndex + threadAmount - 1;
-        
+        //if(res->result !=-1){
+	//	fin=res->result;
+	//}
+	//free(res);        
    }
 
    for(i=0;i<n;i++){
@@ -135,43 +133,39 @@ printf("-------------------------------------\n");
             }
    }
 
-printf("Found it here in thread at index %d\n", foundIndex); 
+printf("Target %d was found at array index %d\n", target, fin);
+return;
+
 }
 
 
 void *threadFunction (void* arg)
 {
-    count++;
-   
-    //threadCount++;
-    //printf("Thread number: %d \n", threadCount);
-    struct resultStruct *data = (struct resultStruct*) arg;
-    
-    //printf("lower: %d\n",data->currIndex);
-    //printf("upper: %d\n",data->upperIndex);
-    //printf("\n");
-    //where *arg is the struct
-    //int curr = data->currIndex;
-    //int upper = data->upperIndex;
-    //int* arr = arg->arr;
-    //int result = arg->result;
-    //data->result=4;
-    printf("On thread %d: Upper bound: %d, Lower bound: %d\n", count,data->upperIndex, data->currIndex);
-printf("\n");
+  
+    resultStruct *data = (resultStruct*) arg;
+    /*printf("Flag is : %d\n", data->result);
+    printf("Curr index: %d\n", data->currIndex);
+    printf("Upper index: %d\n", data->upperIndex);  
+*/  
+
     //int threadNum = (intptr_t)arg;
 
-    //now search
+        //now search
 	int k;
+	
         
-        
+	//printf("Current index: %d\n", data->currIndex);
 	for(k=data->currIndex; k<=data->upperIndex; k++){
+		printf("%d\n",ptr[k]);
 		
-		if(data->arr[k]==data->target){
-			printf("Found at index: %d\n",k);
-                        data->result=k;
+		if(ptr[k]==target){
+			//printf("Checking if %d == %d\n", ptr[k], target);
+			//printf("Found at index: %d\n",k);
+                        fin=k;
 			break;
 		}
 	}
+    
     
 
     //pid_t tid = syscall(SYS_gettid);
@@ -179,55 +173,3 @@ printf("\n");
     //printf("I am in thread no : %d with Thread ID : %d\n",threadNum,/(int)tid);
 
 }
-
-
-
-/*#include<stdio.h>
-#include<pthread.h>
-#include <stdlib.h>
-#include <sys/types.h>
-#include <sys/syscall.h>
-#include <unistd.h>
-
-
-void *threadFunction (void *);
-
-int main (void)
-{
-
-   int n=0,i=0,retVal=0;
-   pthread_t *thread;
-
-   printf("Enter the number for threads you want to create between 1 to 100 \n");
-   scanf("%d",&n);
-
-   thread = (pthread_t *) malloc (n*sizeof(pthread_t));
-
-   for (i=0;i<n;i++){
-       retVal=pthread_create(&thread[i],NULL,threadFunction,(void *)(intptr_t)i);
-       if(retVal!=0){
-           printf("pthread_create failed in %d_th pass\n",i);
-           exit(EXIT_FAILURE);        
-       }
-   }
-
-   for(i=0;i<n;i++){
-        retVal=pthread_join(thread[i],NULL);
-            if(retVal!=0){
-               printf("pthread_join failed in %d_th pass\n",i);
-               exit(EXIT_FAILURE);        
-            }
-   }
-
-}
-
-void *threadFunction (void *arg)
-{
-    int threadNum = (intptr_t)arg;
-
-    pid_t tid = syscall(SYS_gettid);
-
-    printf("I am in thread no : %d with Thread ID : %d\n",threadNum,(int)tid);
-
-
-}*/
