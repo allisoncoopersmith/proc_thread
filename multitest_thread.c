@@ -6,6 +6,7 @@
 #include <unistd.h>
 #include "multitest.h"
 
+// final update
 
 //updated version because Diana is dumb
 
@@ -55,10 +56,10 @@ void makeAndScramble (int* numbers, int arraySize) {
 int search (int arrSize, int threadSize1, int target1, int * numbers)
 {
 
-	printf("yes\n");
+	//printf("yes\n");
    int arraySize = arrSize;
    target = target1; //user specified
-   ptr=&(numbers[0]);
+   ptr=numbers;
    //int numbers[arraySize];
    //makeAndScramble(numbers,arraySize);
    
@@ -126,7 +127,7 @@ printf("-------------------------------------\n");
 
        if(retVal!=0){
            printf("Get forked. pthread_create failed in %d_th pass\n",i);
-           exit(EXIT_FAILURE);        
+           exit(-1);        
        }
         //if(res->result !=-1){
 	//	fin=res->result;
@@ -138,7 +139,7 @@ printf("-------------------------------------\n");
         retVal=pthread_join(thread[i],NULL);
             if(retVal!=0){
                printf("pthread_join failed in %d_th pass\n",i);
-               exit(EXIT_FAILURE);        
+               exit(-1);        
             }
    }
 
@@ -175,10 +176,13 @@ void *threadFunction (void* arg)
 			//printf("Checking if %d == %d\n", ptr[k], target);
 			//printf("Found at index: %d\n",k);
                         fin=k;
+			
 			break;
 		}
 	}
 
+	
+	//pthread_exit();
 	//printf("Items per thread: %d\n", itemsPerThread);
 	//itemsPerThread=0;
     //need to exit the way he wants ys to

@@ -4,6 +4,7 @@
 
 int*ptr; //holds initial array numbers
 //int fin=0;
+int check;
 
 int makeRandoms(int upper){
         int num = (rand() %(upper + 1));
@@ -21,8 +22,8 @@ void swapindex(int* numbers, int check, int arraySize){
 	}while(newIndex == check);
 
 	//swap the target with a random number in the array until the target != the swapped array
-		printf("Numbers check : %d\n", numbers[check]);
-		printf("New index: %d\n", numbers[newIndex]);
+		//printf("Numbers check : %d\n", numbers[check]);
+		//printf("New index: %d\n", numbers[newIndex]);
 
 		int temp = numbers[check];
 		numbers[check] = numbers[newIndex];
@@ -80,7 +81,7 @@ int main (int argc, char** argv){
 	}
 
 	
-	int check = 0;
+	check = 0;
 	int t=0;
 	ptr=&(numbers[0]);
 	for(t=0; t<2; t++){
@@ -88,12 +89,12 @@ int main (int argc, char** argv){
 		printyboi(ptr, arraySize);
 
 		/*this is the search function*/check = search (arraySize, numThreads, target, numbers);
-		check = 2;
+		//check = 2;
 		if(check == -1){
 			printf("oh shet, there was an error boi.\n");
 		}else{
 		//means we got the index
-			swapindex(&(numbers[0]), check, arraySize); //take the target and swap somewhere else -- prevents from generating an array again
+			swapindex(numbers, check, arraySize); //take the target and swap somewhere else -- prevents from generating an array again
 		}
 
 

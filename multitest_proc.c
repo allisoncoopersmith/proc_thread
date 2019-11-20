@@ -8,6 +8,8 @@
 #include <signal.h>
 #include "multitest.h"
 
+//final
+
 
 /*int makeRandoms(int upper){
         int num = (rand() %
@@ -42,7 +44,7 @@ int search(int arrSize, int procSize1, int target1, int* numbers) {
   //makeAndScramble(numbers,arraySize);
 
 
-
+    int procSpace;
     int procSize = procSize1;
     int target = target1;
     int processAmount = arraySize/procSize;
@@ -62,7 +64,9 @@ int search(int arrSize, int procSize1, int target1, int* numbers) {
         //  printf("%d\n", l);
           if (numbers[l]==target) {
 
-           printf("found at %d\n", l);
+           //printf("found at %d\n", l);
+	   
+		
           exit(l-currIndex);
           }
         }
@@ -84,8 +88,8 @@ int search(int arrSize, int procSize1, int target1, int* numbers) {
       waitpid(signals[k], &status, 0);
       if(WEXITSTATUS(status) != 251) {
 	int exitStatus = WEXITSTATUS(status);
-	int procSpace = (k * procSize) + exitStatus;
-        printf("Found in process: %d \n", procSpace);
+	procSpace = (k * procSize) + exitStatus;
+	printf("Target %d was found at array index %d\n", target, procSpace);
       }
 
     }
@@ -94,5 +98,5 @@ int search(int arrSize, int procSize1, int target1, int* numbers) {
 
 
 
-    return 0; //if this doesn't work, return 0
+    return procSpace;
 }
