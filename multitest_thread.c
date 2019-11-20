@@ -4,6 +4,8 @@
 #include <sys/types.h>
 #include <sys/syscall.h>
 #include <unistd.h>
+#include "multitest.h"
+
 
 //updated version because Diana is dumb
 
@@ -11,7 +13,7 @@
 int count=0;
 int*ptr; //holds initial array numbers
 int fin=0; //holds final index (to be returned from main method)
-int target = 17; // make this a macro
+int target;// = 17; // make this a macro
 typedef struct resultStruct{
 	int currIndex;
 	int upperIndex; // 
@@ -22,7 +24,7 @@ typedef struct resultStruct{
 }resultStruct;
 
 void *threadFunction (void *); // this will be the search function
-
+/*
 int makeRandoms(int upper){
         int num = (rand() %
            (upper + 1));
@@ -48,19 +50,21 @@ void makeAndScramble (int* numbers, int arraySize) {
   }
 }
 
+*/
 
-
-int main (void)
+int search (int arrSize, int threadSize1, int target1, int * numbers)
 {
 
-   int arraySize = 10;
-   //target = 2; //user specified
-   int numbers[arraySize];
-   makeAndScramble(numbers,arraySize);
+	printf("yes\n");
+   int arraySize = arrSize;
+   target = target1; //user specified
+   ptr=&(numbers[0]);
+   //int numbers[arraySize];
+   //makeAndScramble(numbers,arraySize);
    
    //printf("PRINTING ORIGINAL ARRAY\n");
    //resultStruct *res = malloc(sizeof(resultStruct)); //struct to pass args to function
-
+/*
 printf("-------------------------------------\n");
  	int d=0;
 	ptr=&(numbers[0]);
@@ -71,12 +75,12 @@ printf("-------------------------------------\n");
 	}
  printf("\n");
 // this is printing the array
- printf("-------------------------------------\n");
+ printf("-------------------------------------\n");*/
 
    // let threadsize be equal to n for now
    int n=0,i=0,retVal=0;
    pthread_t *thread;
-   n = 5; //number of threads we want
+   n = threadSize1; //number of threads we want
   
    
    //the number of elements in threads to run
@@ -99,11 +103,11 @@ printf("-------------------------------------\n");
 			bounds[q].upperIndex= bounds[q].currIndex + threadAmount -1;
 		}
 		bounds[q].result=-1;
-		printf("Added: upper: %d, lower: %d, %d\n", bounds[q].upperIndex, bounds[q].currIndex, bounds[q].result);
+		//printf("Added: upper: %d, lower: %d, %d\n", bounds[q].upperIndex, bounds[q].currIndex, bounds[q].result);
 		
 	}
 
-return -1;
+
 
 
   //now we have bounds arary
@@ -139,8 +143,8 @@ return -1;
    }
 
 printf("Target %d was found at array index %d\n", target, fin);
-printf("Thread count: %d\n", count);
-return;
+//printf("Thread count: %d\n", count);
+return fin;
 
 }
 
@@ -175,9 +179,9 @@ void *threadFunction (void* arg)
 		}
 	}
 
-	printf("Items per thread: %d\n", itemsPerThread);
-	itemsPerThread=0;
-    
+	//printf("Items per thread: %d\n", itemsPerThread);
+	//itemsPerThread=0;
+    //need to exit the way he wants ys to
     
 
     //pid_t tid = syscall(SYS_gettid);
