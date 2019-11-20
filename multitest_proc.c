@@ -94,5 +94,5 @@ int search(int arrSize, int procSize1, int target1, int* numbers) {
 
 
 
-    return l; //if this doesn't work, return 0
+    return 0; //if this doesn't work, return 0
 }
