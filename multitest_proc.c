@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <time.h>
 #include <stddef.h>
@@ -7,9 +6,10 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <signal.h>
+#include "multitest.h"
 
 
-int makeRandoms(int upper){
+/*int makeRandoms(int upper){
         int num = (rand() %
            (upper + 1));
 
@@ -33,18 +33,18 @@ void makeAndScramble (int* numbers, int arraySize) {
     numbers[index1] = numbers[index2];
     numbers[index2] = temp;
   }
-}
+}*/
 //int multitest(int arraySize, int procSize){
-int main() {
+int search(int arrSize, int procSize1, int target1, int* numbers) {
   //initializing array
-  int arraySize = 100;
-  int numbers[arraySize];
-  makeAndScramble(numbers,arraySize);
+  int arraySize = arrSize;
+  //int numbers[arraySize];
+  //makeAndScramble(numbers,arraySize);
 
 
 
-    int procSize = 10;
-    int target = 5;
+    int procSize = procSize1;
+    int target = target1;
     int processAmount = arraySize/procSize;
     int currIndex = 0;
     int upperIndex = procSize-1;
@@ -78,15 +78,14 @@ int main() {
 
 
     }
-  int k;
+    int k;
     for (k=0; k< processAmount; k++) {
       int status;
       waitpid(signals[k], &status, 0);
       if(WEXITSTATUS(status) != 251) {
-	       int exitStatus = WEXITSTATUS(status);
-	       int procSpace = (k * procSize) + exitStatus;
-         printf("Found in process: %d \n", procSpace);
-
+	int exitStatus = WEXITSTATUS(status);
+	int procSpace = (k * procSize) + exitStatus;
+        printf("Found in process: %d \n", procSpace);
       }
 
     }
@@ -95,5 +94,5 @@ int main() {
 
 
 
-    return 0;
+    return l; //if this doesn't work, return 0
 }
