@@ -1,6 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
-//#include "multitest.h"
+#include "multitest.h"
 
 int*ptr; //holds initial array numbers
 //int fin=0;
@@ -87,7 +87,7 @@ int main (int argc, char** argv){
 
 		printyboi(ptr, arraySize);
 
-		// this is the search function check = search (arraySize, numThreads, target, numbers);
+		/*this is the search function*/check = search (arraySize, numThreads, target, numbers);
 		check = 2;
 		if(check == -1){
 			printf("oh shet, there was an error boi.\n");
