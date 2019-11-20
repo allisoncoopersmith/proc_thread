@@ -93,8 +93,8 @@ printf("-------------------------------------\n");
 			bounds[q].upperIndex= arraySize-1;
 			bounds[q].currIndex= bounds[q-1].upperIndex + 1;
 		}else{
-			bounds[q].upperIndex= bounds[q-1].currIndex + threadAmount -1;
 			bounds[q].currIndex= bounds[q-1].upperIndex + 1;
+			bounds[q].upperIndex= bounds[q].currIndex + threadAmount -1;
 		}
 		bounds[q].result=-1;
 		printf("Added: %d, %d, %d\n", bounds[q].upperIndex, bounds[q].currIndex, bounds[q].result);
