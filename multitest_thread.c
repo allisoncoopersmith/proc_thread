@@ -5,11 +5,13 @@
 #include <sys/syscall.h>
 #include <unistd.h>
 
+//updated version because Diana is dumb
+
 //int threadCount=0;
-//int count=0;
+int count=0;
 int*ptr; //holds initial array numbers
 int fin=0; //holds final index (to be returned from main method)
-int target = 2; // make this a macro
+int target = 17; // make this a macro
 typedef struct resultStruct{
 	int currIndex;
 	int upperIndex; // 
@@ -52,7 +54,7 @@ int main (void)
 {
 
    int arraySize = 10;
-   target = 2; //user specified
+   //target = 2; //user specified
    int numbers[arraySize];
    makeAndScramble(numbers,arraySize);
    
@@ -63,7 +65,7 @@ printf("-------------------------------------\n");
  	int d=0;
 	ptr=&(numbers[0]);
 	for(d=0; d<arraySize; d++){
-		printf("%d\t",ptr[d]);
+		printf("%d\t  ",ptr[d]);
 		//res.arr[d]=numbers[d];
 		//printf("%d\t",res.arr[d]); //-- values have been copied
 	}
@@ -74,10 +76,10 @@ printf("-------------------------------------\n");
    // let threadsize be equal to n for now
    int n=0,i=0,retVal=0;
    pthread_t *thread;
-   n = 2; //number of threads we want
+   n = 5; //number of threads we want
   
    
-   //the number of threads to run
+   //the number of elements in threads to run
    int threadAmount = arraySize/n; //where n is threadSize (the amount of elements in between each thing)
    //res->upperIndex = threadAmount-1;
    //res->currIndex=0;
@@ -97,8 +99,11 @@ printf("-------------------------------------\n");
 			bounds[q].upperIndex= bounds[q].currIndex + threadAmount -1;
 		}
 		bounds[q].result=-1;
-		printf("Added: %d, %d, %d\n", bounds[q].upperIndex, bounds[q].currIndex, bounds[q].result);
+		printf("Added: upper: %d, lower: %d, %d\n", bounds[q].upperIndex, bounds[q].currIndex, bounds[q].result);
+		
 	}
+
+return -1;
 
 
   //now we have bounds arary
@@ -111,7 +116,7 @@ printf("-------------------------------------\n");
 	res->upperIndex=bounds[q].upperIndex;
 	res->currIndex=bounds[q].currIndex;
 	res->result = -1;
-	printf("Res values: %d upper, %d current, %d flag\n", res->upperIndex, res->currIndex, res->result);
+	//printf("Res values: %d upper, %d current, %d flag\n", res->upperIndex, res->currIndex, res->result);
 	 
        retVal=pthread_create(&thread[i],NULL,threadFunction,res);
 
@@ -134,6 +139,7 @@ printf("-------------------------------------\n");
    }
 
 printf("Target %d was found at array index %d\n", target, fin);
+printf("Thread count: %d\n", count);
 return;
 
 }
@@ -141,7 +147,9 @@ return;
 
 void *threadFunction (void* arg)
 {
-  
+	count++;
+	int itemsPerThread=0;
+	  
     resultStruct *data = (resultStruct*) arg;
     /*printf("Flag is : %d\n", data->result);
     printf("Curr index: %d\n", data->currIndex);
@@ -156,15 +164,19 @@ void *threadFunction (void* arg)
         
 	//printf("Current index: %d\n", data->currIndex);
 	for(k=data->currIndex; k<=data->upperIndex; k++){
-		printf("%d\n",ptr[k]);
-		
+		//printf("%d\n",ptr[k]);
+		itemsPerThread++;
 		if(ptr[k]==target){
+			
 			//printf("Checking if %d == %d\n", ptr[k], target);
 			//printf("Found at index: %d\n",k);
                         fin=k;
 			break;
 		}
 	}
+
+	printf("Items per thread: %d\n", itemsPerThread);
+	itemsPerThread=0;
     
     
 
