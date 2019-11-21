@@ -1,0 +1,16 @@
+The current implementation of the driver code is to take in inputs specifying the arraysize and the number of threads/procs a user is to enter
+	so ./a.out arrSize thread/procNum
+
+I have added some error checks to make sure the inputs are valid
+
+I did it this way because manually changing sizes for extensive testing is too tedious (I think someone on piazza said it can be done this way)
+
+I capped all proc/thread max to be 250, although the tests I did go up to 150 max because franny said to do it this way
+
+the target is always 0, as this is the minimum index a valid array can have and if randomized, we are always searching for this in different places
+
+You will see the two files that contain test data -- respectively named
+
+Please download the code and make sure it runs on your machine as well!! 
+
+

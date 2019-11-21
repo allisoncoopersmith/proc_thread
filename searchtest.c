@@ -59,60 +59,82 @@ void printyboi(int * ptr, int arraySize){
 
 	return;
 }
-/*
-void A (int arraySize, int numThreads, int target, int *arr){
-	//array size 100
-	
 
 
-}
-
-void B (int arraySize, int numThreads, int target, int *arr){
-	//arraysize 1000
-
-
-}
-
-void C (int arraySize, int numThreads, int target, int *arr){
-	//arraySize 10000
-
-
-}
-
-void D (int arraySize, int numThreads, int target, int *arr){
-	//arraySize 20000
-
-
-}
-*/
 int main (int argc, char** argv){
-	arraySize = 50; //this changes based on function
-	numThreads = 6; //this will change based on method
-	target = 2; //just make this the same each time
-	int numbers[arraySize];
-	ptr=numbers;
-	makeAndScramble(numbers,arraySize); //done before each test
-	
+	//have user enter arguments??
+	//enter arraysize and num threads/processes
 
-	if(arraySize<numThreads || (arraySize < 0) || (numThreads<0) || (target<0 || target > (arraySize-1))){
+	if (argc !=3){
+		printf("Invalid number of arguments\n");
+	}
+
+	
+			
+	
+	arraySize = atoi(argv[1]); //this changes based on function
+	numThreads = atoi(argv[2]); //this will change based on method
+	//printf("Num threads: %d. array size %d\n", numThreads, arraySize);
+	target = 0; //just make this the same each time -- guaranteed to always have this at least
+
+	
+	if(arraySize<numThreads || numThreads > arraySize|| (arraySize < 0) || (numThreads<0) || (target<0 || target > (arraySize-1)) || arraySize == 0){
+		if(arraySize == 0){
+			printf("Cannot have arraysize 0\n");
+			return 0;
+		}
 		printf("Error! Something with the bounds is off.\n");
 		return -1;
 	}
 
-	
+	if(numThreads>250){
+		printf("Max size of thread/proc is capped at 250\n");
+		numThreads=250;
+	}
+	//int numbers[arraySize];
+	//ptr=numbers;
+	//makeAndScramble(numbers,arraySize); //done before each test
 	check = 0;
-	int t=0;
-	
+	int t=0; //iterator
 
-
-	
-
-	for(t=0; t<5; t++){
-		//x++;
+		int numbers[arraySize]; //where numbersA is the array for A
+		makeAndScramble(numbers,arraySize);
+		ptr=numbers;
+		//printf("Test A\n");
 		
+		struct timeval start;
+		struct timeval end;
+		struct timeval time;
+
+		double timeA=0.00;
+		
+
+		gettimeofday(&time, NULL);
+		suseconds_t systime = time.tv_usec;
+		srand(systime);
 	
-		printyboi(ptr, arraySize);
-		check = search (arraySize, numThreads, target, numbers);
+
+
+	
+		check = 0;
+		//int t=0;
+		int timeAarr[100];
+	
+
+
+	
+
+	for(t=0; t<100; t++){	
+				gettimeofday(&start, NULL);
+				check = search (arraySize, numThreads, target, numbers);
+				gettimeofday(&end, NULL);
+				//printf("Target %d was found at array index %d\n", target, check);
+				timeAarr[t] = (end.tv_sec-start.tv_sec)*1000000 + end.tv_usec-start.tv_usec;
+				timeA += (end.tv_sec-start.tv_sec)*1000000 + end.tv_usec-start.tv_usec;
+				//swapindex(numbersA, check, arraySize);
+				 //get new index for next iteration
+			
+			
 
 		if(check == -1){
 			//this case is impossible, as we are generating a number guaranteed to be somewhere in the array
@@ -126,9 +148,9 @@ int main (int argc, char** argv){
 
        }
 
-
-	
-	return 0;
+	  timeA = timeA/100.0; //get average over 100 tests
+      	  printf("Microseconds for workload array size %d, thread/proc size %d: %f\n", arraySize, numThreads, timeA);
+          return 0;
 
 
 }
