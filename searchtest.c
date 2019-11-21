@@ -1,10 +1,13 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include<sys/time.h>
 #include "multitest.h"
 
 int*ptr; //holds initial array numbers
-//int fin=0;
-int check;
+int check; //holds final target values
+int arraySize; //size of the array
+int target; //target
+int numThreads; //where this is the number of threads/procs
 
 int makeRandoms(int upper){
         int num = (rand() %(upper + 1));
@@ -15,22 +18,13 @@ void swapindex(int* numbers, int check, int arraySize){
 	//take index, pick a random number within arraysize, make sure it is not == index, and then swap
 	int newIndex = -1;
 	do{
-	
 		newIndex = makeRandoms(arraySize);
-		printf("New index is: %d, old index was %d\n", newIndex, check);
-
 	}while(newIndex == check);
-
-	//swap the target with a random number in the array until the target != the swapped array
-		//printf("Numbers check : %d\n", numbers[check]);
-		//printf("New index: %d\n", numbers[newIndex]);
-
 		int temp = numbers[check];
 		numbers[check] = numbers[newIndex];
 		numbers[newIndex] = temp;
 
 	  return; 
-
 }
 
 
@@ -54,26 +48,51 @@ void makeAndScramble (int* numbers, int arraySize) {
 }
 
 void printyboi(int * ptr, int arraySize){
+	//used to print the array being searched 
 	printf("----------------------------------------------------------------------------------\n");
 	int d=0;
 	for(d=0; d<arraySize; d++){
 		printf("%d\t",ptr[d]);
-		//printf("%d\t",res.arr[d]); //-- values have been copied
 	}
  	printf("\n");
-	// this is printing the array
 	printf("----------------------------------------------------------------------------------\n");
 
 	return;
 }
+/*
+void A (int arraySize, int numThreads, int target, int *arr){
+	//array size 100
+	
 
+
+}
+
+void B (int arraySize, int numThreads, int target, int *arr){
+	//arraysize 1000
+
+
+}
+
+void C (int arraySize, int numThreads, int target, int *arr){
+	//arraySize 10000
+
+
+}
+
+void D (int arraySize, int numThreads, int target, int *arr){
+	//arraySize 20000
+
+
+}
+*/
 int main (int argc, char** argv){
-	int arraySize = 10;
-	int numThreads = 5;
-	int target = 2;
+	arraySize = 50; //this changes based on function
+	numThreads = 6; //this will change based on method
+	target = 2; //just make this the same each time
 	int numbers[arraySize];
-	ptr=&(numbers[0]);
-	makeAndScramble(numbers,arraySize);
+	ptr=numbers;
+	makeAndScramble(numbers,arraySize); //done before each test
+	
 
 	if(arraySize<numThreads || (arraySize < 0) || (numThreads<0) || (target<0 || target > (arraySize-1))){
 		printf("Error! Something with the bounds is off.\n");
@@ -83,22 +102,32 @@ int main (int argc, char** argv){
 	
 	check = 0;
 	int t=0;
-	ptr=&(numbers[0]);
-	for(t=0; t<2; t++){
+	
 
+
+	
+
+	for(t=0; t<5; t++){
+		//x++;
+		
+	
 		printyboi(ptr, arraySize);
+		check = search (arraySize, numThreads, target, numbers);
 
-		/*this is the search function*/check = search (arraySize, numThreads, target, numbers);
-		//check = 2;
 		if(check == -1){
-			printf("oh shet, there was an error boi.\n");
+			//this case is impossible, as we are generating a number guaranteed to be somewhere in the array
+			printf("Index error, number not found.\n");
 		}else{
 		//means we got the index
+			printf("Target %d was found in the array at index: %d\n", target, check);
 			swapindex(numbers, check, arraySize); //take the target and swap somewhere else -- prevents from generating an array again
-		}
+		} //this goes inbetween tests
 
 
-       }//end for loop -- this is for a test. Have five loops to test on different indices with different targets
+       }
+
+
+	
 	return 0;
 
 

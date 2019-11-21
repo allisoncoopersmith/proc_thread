@@ -11,42 +11,19 @@
 //final
 
 
-/*int makeRandoms(int upper){
-        int num = (rand() %
-           (upper + 1));
-
-    return num;
-}
-
-
-void makeAndScramble (int* numbers, int arraySize) {
-  srand(time(NULL));
-  int x;
-  for (x=0; x<arraySize; x++) {
-    numbers[x] = x;
-  }
-  int y;
-  int stop = ((arraySize/4)*3);
-
-  for (y= 0; y < stop; y++) {
-    int index1= makeRandoms(arraySize-1);
-    int index2 = makeRandoms(arraySize-1);
-    int temp = numbers[index1];
-    numbers[index1] = numbers[index2];
-    numbers[index2] = temp;
-  }
-}*/
 //int multitest(int arraySize, int procSize){
-int search(int arrSize, int procSize1, int target1, int* numbers) {
+int search(int arraySize, int procSize, int target, int* numbers) {
   //initializing array
-  int arraySize = arrSize;
+  //int arraySize = arrSize;
   //int numbers[arraySize];
   //makeAndScramble(numbers,arraySize);
+	printf("-process\n");
+	printf("Array size: %d, Number of processes: %d, Target: %d\n", arraySize, procSize, target);
 
 
     int procSpace;
-    int procSize = procSize1;
-    int target = target1;
+    //int procSize = procSize1;
+   // int target = target1;
     int processAmount = arraySize/procSize;
     int currIndex = 0;
     int upperIndex = procSize-1;
@@ -89,7 +66,7 @@ int search(int arrSize, int procSize1, int target1, int* numbers) {
       if(WEXITSTATUS(status) != 251) {
 	int exitStatus = WEXITSTATUS(status);
 	procSpace = (k * procSize) + exitStatus;
-	printf("Target %d was found at array index %d\n", target, procSpace);
+	//printf("Target %d was found at array index %d\n", target, procSpace);
       }
 
     }
