@@ -3,6 +3,7 @@ all:
 
 proc: searchtest.c multitest_proc.o
 	gcc searchtest.c multitest_proc.o
+	
 
 thread: searchtest.c multitest_thread.o
 	gcc -lpthread searchtest.c multitest_thread.o

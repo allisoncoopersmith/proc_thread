@@ -3,26 +3,50 @@
 #include<sys/time.h>
 #include "multitest.h"
 
-int*ptr; //holds initial array numbers
+//int*ptr; //holds initial array numbers
 int check; //holds final target values
 int arraySize; //size of the array
 int target; //target
 int numThreads; //where this is the number of threads/procs
+
+
+//FINAL FINAL FINAL
 
 int makeRandoms(int upper){
         int num = (rand() %(upper + 1));
 	return num;
 }
 
+void printyboi(int * ptr, int arraySize){
+	//used to print the array being searched 
+	printf("----------------------------------------------------------------------------------\n");
+	int d=0;
+	for(d=0; d<arraySize; d++){
+		printf("%d\t",ptr[d]);
+	}
+ 	printf("\n");
+	printf("----------------------------------------------------------------------------------\n");
+
+	return;
+}
+
+
 void swapindex(int* numbers, int check, int arraySize){
 	//take index, pick a random number within arraysize, make sure it is not == index, and then swap
-	int newIndex = -1;
+	int newIndex;
 	do{
-		newIndex = makeRandoms(arraySize);
+		newIndex = makeRandoms(arraySize-1);
+		//printf("Old index %d, new index %d\n", check, newIndex);
 	}while(newIndex == check);
+		
 		int temp = numbers[check];
+		//printf("New number is %d\n", numbers[newIndex]);
 		numbers[check] = numbers[newIndex];
 		numbers[newIndex] = temp;
+		//printyboi(numbers, arraySize);
+
+
+
 
 	  return; 
 }
@@ -47,18 +71,6 @@ void makeAndScramble (int* numbers, int arraySize) {
   }
 }
 
-void printyboi(int * ptr, int arraySize){
-	//used to print the array being searched 
-	printf("----------------------------------------------------------------------------------\n");
-	int d=0;
-	for(d=0; d<arraySize; d++){
-		printf("%d\t",ptr[d]);
-	}
- 	printf("\n");
-	printf("----------------------------------------------------------------------------------\n");
-
-	return;
-}
 
 
 int main (int argc, char** argv){
@@ -77,8 +89,17 @@ int main (int argc, char** argv){
 	//printf("Num threads: %d. array size %d\n", numThreads, arraySize);
 	target = 0; //just make this the same each time -- guaranteed to always have this at least
 
+	if(arraySize == 0){
+		printf("Array size cannot be 0\n");
+		return 0;
+	}
+
+	if(numThreads == 0){
+		printf("Thread/Proc size cannot be 0\n");
+		return 0;
+	}
 	
-	if(arraySize<numThreads || numThreads > arraySize|| (arraySize < 0) || (numThreads<0) || (target<0 || target > (arraySize-1)) || arraySize == 0){
+	if(arraySize<numThreads || numThreads > arraySize|| (arraySize < 0) || (numThreads<0) || (target<0 || target > (arraySize-1))){
 		if(arraySize == 0){
 			printf("Cannot have arraysize 0\n");
 			return 0;
@@ -99,7 +120,8 @@ int main (int argc, char** argv){
 
 		int numbers[arraySize]; //where numbersA is the array for A
 		makeAndScramble(numbers,arraySize);
-		ptr=numbers;
+		//printyboi(numbers, arraySize);
+		//ptr=numbers;
 		//printf("Test A\n");
 		
 		struct timeval start;
@@ -125,13 +147,16 @@ int main (int argc, char** argv){
 	
 
 	for(t=0; t<100; t++){	
+				printf("\n");				
+				printf("Iteration %d of 99\n", t);
+				//printyboi(numbers, arraySize);
 				gettimeofday(&start, NULL);
 				check = search (arraySize, numThreads, target, numbers);
 				gettimeofday(&end, NULL);
 				//printf("Target %d was found at array index %d\n", target, check);
 				timeAarr[t] = (end.tv_sec-start.tv_sec)*1000000 + end.tv_usec-start.tv_usec;
 				timeA += (end.tv_sec-start.tv_sec)*1000000 + end.tv_usec-start.tv_usec;
-				//swapindex(numbersA, check, arraySize);
+				//swapindex(numbers, check, arraySize);
 				 //get new index for next iteration
 			
 			
@@ -149,7 +174,8 @@ int main (int argc, char** argv){
        }
 
 	  timeA = timeA/100.0; //get average over 100 tests
-      	  printf("Microseconds for workload array size %d, thread/proc size %d: %f\n", arraySize, numThreads, timeA);
+      	  printf("Average microseconds for workload array size %d, thread/proc size %d: %f\n", arraySize, numThreads, timeA);
+	  
           return 0;
 
 
